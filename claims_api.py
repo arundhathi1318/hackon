@@ -9,6 +9,7 @@ import sys
 import smtplib # For sending emails
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from main import run_claims_triage_system
 from datetime import datetime # For dynamic subject line
 
 from dotenv import load_dotenv

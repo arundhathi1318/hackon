@@ -10,16 +10,11 @@ from tasks import MOCK_CPT_CODES, MOCK_ICD_CODES, MOCK_MEMBERS, ClaimsTasks
 load_dotenv()
 
 def run_claims_triage_system(claims_data_json_string):
-    """
-    Main function to orchestrate the claims triage process.
-    Takes claims data as a JSON string.
-    """
+   
     agents = ClaimsAgents()
     tasks = ClaimsTasks()
 
-    # ... (rest of your agent and task definitions, exactly as before) ...
-
-    # Create Crew
+   
     claims_crew = Crew(
         agents=[
             intake_agent,
