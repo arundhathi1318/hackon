@@ -1,0 +1,8 @@
+{
+  "MBR001": {"eligible": true},
+  "MBR002": {"eligible": true},
+  "MBR003": {"eligible": true},
+  "MBR004": {"eligible": false},
+  "MBR005": {"eligible": true},
+  "MBR006": {"eligible": true}
+}
