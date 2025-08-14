@@ -1,4 +1,4 @@
-# main.py (Make sure it looks like this for clean import)
+# main.py
 import os
 import json
 import argparse
@@ -14,7 +14,42 @@ def run_claims_triage_system(claims_data_json_string):
     agents = ClaimsAgents()
     tasks = ClaimsTasks()
 
-   
+    # --- DEFINE AGENT OBJECTS HERE ---
+    # You need to call the methods on the 'agents' instance
+    intake_agent = agents.intake_agent()
+    validation_agent = agents.validation_agent()
+    anomaly_detection_agent = agents.anomaly_detection_agent()
+    llm_explanation_agent = agents.llm_explanation_agent()
+    routing_agent = agents.routing_agent()
+    audit_summary_agent = agents.audit_summary_agent()
+
+    # --- DEFINE TASK OBJECTS HERE ---
+    # You need to call the methods on the 'tasks' instance
+    task_parse_categorize = tasks.parse_and_categorize_claims(
+        agent=intake_agent
+    )
+    task_validate = tasks.validate_claims(
+        agent=validation_agent,
+        context=[task_parse_categorize]
+    )
+    task_detect_anomalies = tasks.detect_anomalies(
+        agent=anomaly_detection_agent,
+        context=[task_validate]
+    )
+    task_generate_explanation = tasks.generate_anomaly_explanation(
+        agent=llm_explanation_agent,
+        context=[task_detect_anomalies]
+    )
+    task_route_claims = tasks.route_claims(
+        agent=routing_agent,
+        context=[task_generate_explanation]
+    )
+    task_summarize_audit = tasks.summarize_audit_claims(
+        agent=audit_summary_agent,
+        context=[task_route_claims]
+    )
+
+    # --- Now the agents and tasks are defined and can be used in Crew ---
     claims_crew = Crew(
         agents=[
             intake_agent,
@@ -46,7 +81,6 @@ def run_claims_triage_system(claims_data_json_string):
     print("Final Audit Summary:")
     print(result) # Still prints to console where FastAPI runs
 
-    # This is the key: return the result so FastAPI can send it back to n8n
     return result
 
 if __name__ == "__main__":
